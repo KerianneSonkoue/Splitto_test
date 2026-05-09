@@ -9,4 +9,10 @@ describe('simplifyDebts', () => {
   it('retourne une liste vide pour un objet vide', () => {
     expect(simplifyDebts({})).toEqual([]);
   });
+
+  it('regle une dette entre 2 personnes en 1 settlement', () => {
+    const result = simplifyDebts({ a: 10, b: -10 });
+    expect(result).toHaveLength(1);
+    expect(result[0]).toEqual({ from: 'b', to: 'a', amount: 10 });
+  });
 });
