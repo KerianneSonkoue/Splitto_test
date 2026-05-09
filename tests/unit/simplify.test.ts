@@ -41,4 +41,15 @@ describe('simplifyDebts', () => {
     expect(result).toHaveLength(1);
     expect(result[0].amount).toBe(0.01);
   });
+
+  it('ignore les soldes proches de 0 dus aux arrondis flottants', () => {
+    const epsilon = 0.0001;
+    const result = simplifyDebts({ alice: epsilon, bob: -epsilon });
+    expect(result).toHaveLength(0);
+  });
+
+  it('ne cree pas de settlement si le montant arrondi vaut 0', () => {
+    const result = simplifyDebts({ a: 0.003, b: -0.003 });
+    expect(result).toEqual([]);
+  });
 });
