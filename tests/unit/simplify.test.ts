@@ -28,4 +28,17 @@ describe('simplifyDebts', () => {
     expect(result).toContainEqual({ from: 'b', to: 'a', amount: 20 });
     expect(result).toContainEqual({ from: 'c', to: 'a', amount: 10 });
   });
+
+  it('gere un montant avec arrondi a 2 decimales', () => {
+    const result = simplifyDebts({ alice: 66.67, bob: -33.33, charlie: -33.34 });
+    expect(result).toHaveLength(2);
+    const totalSettled = result.reduce((s, r) => s + r.amount, 0);
+    expect(totalSettled).toBeCloseTo(66.67, 1);
+  });
+
+  it('arrondit le montant a 2 decimales avec Math.round (0.005 -> 0.01)', () => {
+    const result = simplifyDebts({ a: 0.005, b: -0.005 });
+    expect(result).toHaveLength(1);
+    expect(result[0].amount).toBe(0.01);
+  });
 });
