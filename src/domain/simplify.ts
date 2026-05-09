@@ -21,7 +21,10 @@ export function simplifyDebts(balances: Balances): Settlement[] {
     const creditor = creditors[ci];
     const debtor = debtors[di];
     const amount = Math.min(creditor.amount, debtor.amount);
-    settlements.push({ from: debtor.id, to: creditor.id, amount });
+    const rounded = Math.round(amount * 100) / 100;
+    if (rounded > 0) {
+      settlements.push({ from: debtor.id, to: creditor.id, amount: rounded });
+    }
     creditor.amount -= amount;
     debtor.amount -= amount;
     if (creditor.amount === 0) ci++;
