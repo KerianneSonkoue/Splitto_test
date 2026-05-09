@@ -11,6 +11,9 @@ export function simplifyDebts(balances: Balances): Settlement[] {
     .filter(([, b]) => b < 0)
     .map(([id, amount]) => ({ id, amount: -amount }));
 
+  creditors.sort((a, b) => b.amount - a.amount);
+  debtors.sort((a, b) => b.amount - a.amount);
+
   let ci = 0;
   let di = 0;
 
